@@ -12,6 +12,7 @@ const DataContext = createContext({});
 export const api = {
   loadData: async () => {
     const json = await fetch("/events.json");
+    
     return json.json();
   },
 };
@@ -29,7 +30,7 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
     if (data) return;
     getData();
-  });
+  }, [data]);
   
   return (
     <DataContext.Provider
@@ -37,6 +38,9 @@ export const DataProvider = ({ children }) => {
       value={{
         data,
         error,
+        last: data?.events 
+      ? [...data.events].sort((a, b) => new Date(b.date) - new Date(a.date))[0] 
+      : null,
       }}
     >
       {children}
