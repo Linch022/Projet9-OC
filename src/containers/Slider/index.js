@@ -11,14 +11,19 @@ const Slider = () => {
     new Date(evtB.date) - new Date(evtA.date)
   );
   
-  const nextCard = () => {
-    setTimeout(
-      () => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0),
-      5000
-    );
+  const nextCard = (newIndex) => {
+    if (!byDateDesc) return;
+    if (newIndex === null) {
+      setIndex(index < byDateDesc.length - 1 ? index + 1 : 0)
+    } else {
+      setIndex(newIndex)
+    }
   };
   useEffect(() => {
-    nextCard();
+    const timeout = setTimeout(() => {
+      nextCard(null);
+    }, 5000);
+      return () => clearTimeout(timeout);
   }, [index, byDateDesc]);
   return (
     <div className="SlideCardList">
@@ -48,6 +53,7 @@ const Slider = () => {
                 type="radio"
                 name="radio-button"
                 checked={index === radioIdx}
+                onChange={() => nextCard(radioIdx)}
                 />
               ))}
             </div>
