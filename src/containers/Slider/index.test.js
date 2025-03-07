@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, act } from "@testing-library/react";
 import Slider from "./index";
 import { api, DataProvider } from "../../contexts/DataContext";
 
@@ -27,18 +27,53 @@ const data = {
 };
 
 describe("When slider is created", () => {
-  it("a list card is displayed", async () => {
+  beforeEach(() => {
     window.console.error = jest.fn();
     api.loadData = jest.fn().mockReturnValue(data);
+  });
+
+  it("a list card is displayed", async () => {
+    render(
+      <DataProvider>
+        <Slider />
+      </DataProvider>
+    );
+
+    await screen.findByText("World economic forum");
+    await screen.findByText("janvier");
+    await screen.findByText(
+      "Oeuvre à la coopération entre le secteur public et le privé."
+    );
+  });
+
+  it("change slide when clicking on a radio button", async () => {
+    const { container } = render(
+      <DataProvider>
+      <Slider />
+    </DataProvider>
+    );
+    
+    await screen.findByText("World economic forum");
+
+    const buttons = container.querySelectorAll('input[type="radio"');
+    expect(buttons.length).toBeGreaterThan(1);
+
+    fireEvent.click(buttons[1]);
+    await screen.findByText("World Gaming Day");
+  });
+
+  it("automatically change slide after 5sec", async () => {
+    jest.useFakeTimers();
     render(
       <DataProvider>
         <Slider />
       </DataProvider>
     );
     await screen.findByText("World economic forum");
-    await screen.findByText("janvier");
-    await screen.findByText(
-      "Oeuvre à la coopération entre le secteur public et le privé."
-    );
+    act(() => {
+      jest.advanceTimersByTime(5000)
+    });
+
+    await screen.findByText("World Gaming Day");
   });
 });
