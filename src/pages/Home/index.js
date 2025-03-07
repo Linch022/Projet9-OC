@@ -115,21 +115,24 @@ const Page = () => {
         </Modal>
       </div>
     </main>
-    <footer className="row">
+    <footer className="row" data-testid="footer-testid">
       <div className="col presta">
         <h3>Notre dernière prestation</h3>
         { last ? 
         <Modal Content={<ModalEvent event={last} />}>
           {({ setIsOpened }) => (
-          <EventCard
-          onClick={() => setIsOpened(true)}
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
-          small
-          label="boom"
-          />
-        )}
+        <>
+        {console.log(last)}
+            <EventCard
+            onClick={() => setIsOpened(true)}
+            imageSrc={last?.cover}
+            title={last?.title}
+            date={new Date(last?.date)}
+            small
+            label="boom"
+            />
+          </>
+          )}
           </Modal>: null
         }
       </div>
