@@ -15,7 +15,8 @@ import ModalEvent from "../../containers/ModalEvent";
 
 const Page = () => {
   const {last} = useData()
-
+  
+  
   return <>
     <header>
       <Menu />
@@ -121,8 +122,6 @@ const Page = () => {
         { last ? 
         <Modal Content={<ModalEvent event={last} />}>
           {({ setIsOpened }) => (
-        <>
-        {console.log(last)}
             <EventCard
             onClick={() => setIsOpened(true)}
             imageSrc={last?.cover}
@@ -131,7 +130,6 @@ const Page = () => {
             small
             label="boom"
             />
-          </>
           )}
           </Modal>: null
         }
