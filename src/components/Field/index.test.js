@@ -19,6 +19,16 @@ describe("When a field is created", () => {
     const labelElement = screen.getByText(/field_label/);
     expect(labelElement).toBeInTheDocument();
   });
+  it("should have required attribute when required is true", () => {
+    render(<Field placeholder="field-placeholder" label="field_label" name="test" required/>);
+    const fieldElement = screen.getByTestId("field-testid");
+    expect(fieldElement).toHaveAttribute("required");
+  });
+  it("should not have required attribute when required is false", () => {
+    render(<Field placeholder="field-placeholder" label="field_label" name="test"/>);
+    const fieldElement = screen.getByTestId("field-testid");
+    expect(fieldElement).not.toHaveAttribute("required");
+  }) 
 
   describe("and its valued changed", () => {
     it("a onChange value is executed", () => {
@@ -50,6 +60,14 @@ describe("When a field is created", () => {
       render(<Field type={FIELD_TYPES.TEXTAREA} name="test" />);
       const fieldElement = screen.getByTestId("field-testid");
       expect(fieldElement.type).toEqual("textarea");
+    });
+  });
+
+  describe("and its type is set to FILED_TYPES.INPUT_EMAIL", () => {
+    it("a email input is rendered", () => {
+      render(<Field type={FIELD_TYPES.INPUT_EMAIL} name="test" />)
+      const fieldElement = screen.getByTestId("field-testid");
+      expect(fieldElement.type).toEqual("email");
     });
   });
 
